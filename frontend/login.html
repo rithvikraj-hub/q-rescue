@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q-RESCUE | Login</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #062c2b, #0b4542, #071d1d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .login-container {
+            width: 400px;
+            padding: 40px;
+            background: rgba(7, 35, 34, 0.95);
+            border: 1px solid rgba(0, 255, 220, 0.25);
+            border-radius: 18px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #00e6c3;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #9bb8b5;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #c7dcda;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #315957;
+            border-radius: 9px;
+            background: #102f2e;
+            color: white;
+            outline: none;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: #00e6c3;
+            box-shadow: 0 0 8px rgba(0, 230, 195, 0.15);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 13px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 9px;
+            background: #00c9ad;
+            color: #062c2b;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #00e6c3;
+            transform: translateY(-1px);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            min-height: 18px;
+        }
+
+        .signup-text {
+            text-align: center;
+            margin-top: 25px;
+            color: #9bb8b5;
+            font-size: 14px;
+        }
+
+        .signup-text a {
+            color: #00e6c3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .signup-text a:hover {
+            text-decoration: underline;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 18px;
+        }
+
+        .back-home a {
+            color: #7fa7a3;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .back-home a:hover {
+            color: #00e6c3;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                width: 90%;
+                padding: 30px 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <div class="logo">Q-RESCUE</div>
+
+        <div class="subtitle">
+            Quantum-Enabled Disaster Response System
+        </div>
+
+        <h2>Welcome Back</h2>
+
+        <form id="loginForm">
+
+            <div class="input-group">
+                <label for="email">Email</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    required
+                >
+            </div>
+
+            <button
+                type="submit"
+                class="login-btn"
+                id="loginButton"
+            >
+                LOGIN
+            </button>
+
+        </form>
+
+        <div id="message" class="message"></div>
+
+        <div class="signup-text">
+            Don't have an account?
+            <a href="signup.html">Create Account</a>
+        </div>
+
+        <div class="back-home">
+            <a href="index.html">← Back to Home</a>
+        </div>
+
+    </div>
+
+
+    <!-- ================= LOGIN JAVASCRIPT ================= -->
+
+    <script>
+
+        document
+            .getElementById("loginForm")
+            .addEventListener("submit", async function(e) {
+
+                e.preventDefault();
+
+                const email =
+                    document.getElementById("email").value.trim();
+
+                const password =
+                    document.getElementById("password").value;
+
+                const message =
+                    document.getElementById("message");
+
+                const loginButton =
+                    document.getElementById("loginButton");
+
+
+                // Clear previous message
+                message.textContent = "";
+
+
+                // Disable button while checking
+                loginButton.disabled = true;
+                loginButton.textContent = "CHECKING...";
+
+
+                try {
+
+                    const response = await fetch(
+                        "https://q-rescue.onrender.com/api/login"
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                email: email,
+                                password: password
+                            })
+                        }
+                    );
+
+
+                    const data = await response.json();
+
+
+                    // ================= SUCCESS =================
+
+                    if (response.ok && data.success) {
+
+                        message.textContent =
+                            "Login successful!";
+
+                        message.style.color =
+                            "#00ff88";
+
+
+                        // Save logged-in user
+                        localStorage.setItem(
+                            "qrescue_user",
+                            JSON.stringify(data.user)
+                        );
+
+
+                        loginButton.textContent =
+                            "SUCCESS";
+
+
+                        // Redirect to dashboard
+                        setTimeout(function() {
+
+                            window.location.href =
+                                "dashboard.html";
+
+                        }, 700);
+
+                    }
+
+
+                    // ================= ERROR =================
+
+                    else {
+
+                        message.textContent =
+                            data.message ||
+                            "Invalid email or password";
+
+                        message.style.color =
+                            "#ff4d6d";
+
+
+                        loginButton.disabled = false;
+
+                        loginButton.textContent =
+                            "LOGIN";
+                    }
+
+                }
+
+
+                // ================= SERVER ERROR =================
+
+                catch (error) {
+
+                    console.error(
+                        "Login Error:",
+                        error
+                    );
+
+
+                    message.textContent =
+                        "Unable to connect to server";
+
+                    message.style.color =
+                        "#ff4d6d";
+
+
+                    loginButton.disabled = false;
+
+                    loginButton.textContent =
+                        "LOGIN";
+                }
+
+            });
+
+    </script>
+
+</body>
+</html>
