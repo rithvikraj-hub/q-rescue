@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q-RESCUE | Emergency Report</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #071a1c;
+            color: #e8ffff;
+            line-height: 1.6;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            width: 100%;
+            padding: 18px 45px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #082326;
+            border-bottom: 1px solid #16484c;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #65f5e7;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 22px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #b8d9da;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover,
+        .nav-links .active {
+            color: #65f5e7;
+        }
+
+        .live-btn {
+            color: #65f5e7;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        /* MAIN */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 55px 0;
+        }
+
+        .report-header {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .report-header .tag {
+            color: #65f5e7;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .report-header h1 {
+            font-size: 42px;
+            margin: 10px 0;
+        }
+
+        .report-header p {
+            color: #9dbabb;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        /* SUMMARY CARDS */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 45px;
+        }
+
+        .summary-card {
+            background: #0b292c;
+            border: 1px solid #195257;
+            border-radius: 14px;
+            padding: 24px;
+        }
+
+        .summary-card .icon {
+            font-size: 25px;
+        }
+
+        .summary-card .label {
+            color: #8faeb0;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        .summary-card h2 {
+            font-size: 28px;
+            margin: 5px 0;
+            color: #ffffff;
+        }
+
+        .summary-card .status {
+            color: #65f5e7;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* SECTION */
+        .section {
+            margin-bottom: 42px;
+        }
+
+        .section-title {
+            color: #65f5e7;
+            font-size: 12px;
+            letter-spacing: 2px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .section h2 {
+            font-size: 27px;
+            margin-bottom: 20px;
+        }
+
+        /* REPORT CARD */
+        .report-card {
+            background: #0b292c;
+            border: 1px solid #195257;
+            border-radius: 14px;
+            padding: 25px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .info-box {
+            background: #082326;
+            border-radius: 10px;
+            padding: 18px;
+            border: 1px solid #123f43;
+        }
+
+        .info-box span {
+            display: block;
+            color: #8faeb0;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .info-box strong {
+            color: #ffffff;
+            font-size: 17px;
+        }
+
+        /* RESOURCE GRID */
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .resource-card {
+            background: #0b292c;
+            border: 1px solid #195257;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .resource-card h3 {
+            margin-bottom: 8px;
+        }
+
+        .resource-card p {
+            color: #9dbabb;
+            font-size: 13px;
+        }
+
+        .progress {
+            height: 8px;
+            background: #163b3e;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 14px 0 8px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #65f5e7;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .percentage {
+            color: #65f5e7;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* SHELTERS */
+        .shelter-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .shelter-card {
+            background: #0b292c;
+            border: 1px solid #195257;
+            border-radius: 14px;
+            padding: 23px;
+        }
+
+        .shelter-card h3 {
+            color: #65f5e7;
+            margin-bottom: 12px;
+        }
+
+        .shelter-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 7px 0;
+            color: #b8d9da;
+            border-bottom: 1px solid #123f43;
+        }
+
+        .available {
+            color: #65f5e7;
+            font-weight: bold;
+        }
+
+        .total-capacity {
+            margin-top: 20px;
+            padding: 18px;
+            text-align: center;
+            background: #082326;
+            border: 1px solid #195257;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .total-capacity strong {
+            color: #65f5e7;
+        }
+
+        /* QUANTUM */
+        .quantum-card {
+            background: linear-gradient(135deg, #0b292c, #102f33);
+            border: 1px solid #28777b;
+            border-radius: 14px;
+            padding: 28px;
+        }
+
+        .quantum-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border: 1px solid #65f5e7;
+            border-radius: 20px;
+            color: #65f5e7;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .optimization-list {
+            margin: 18px 0;
+        }
+
+        .optimization-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 13px 0;
+            border-bottom: 1px solid #17474b;
+        }
+
+        .optimization-item span:last-child {
+            color: #65f5e7;
+            font-weight: bold;
+        }
+
+        .quantum-note {
+            margin-top: 18px;
+            color: #9dbabb;
+            font-size: 13px;
+            background: #082326;
+            padding: 14px;
+            border-radius: 9px;
+        }
+
+        /* EVACUATION */
+        .evacuation-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .evacuation-card {
+            background: #0b292c;
+            border: 1px solid #195257;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .route {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .route span {
+            color: #65f5e7;
+        }
+
+        .priority {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 5px;
+            background: #173d40;
+            color: #65f5e7;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* FINAL REPORT */
+        .final-report {
+            text-align: center;
+            padding: 35px;
+            background: #0b292c;
+            border: 1px solid #28777b;
+            border-radius: 14px;
+        }
+
+        .final-report h2 {
+            margin-bottom: 8px;
+        }
+
+        .final-report p {
+            color: #9dbabb;
+            margin-bottom: 20px;
+        }
+
+        .generate-btn {
+            border: none;
+            background: #65f5e7;
+            color: #062022;
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .generate-btn:hover {
+            opacity: 0.85;
+        }
+
+        #report-message {
+            margin-top: 15px;
+            color: #65f5e7;
+            font-size: 13px;
+            display: none;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid #16484c;
+            color: #718f91;
+            font-size: 12px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .summary-grid,
+            .resource-grid,
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .shelter-grid,
+            .evacuation-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                padding: 15px 20px;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .summary-grid,
+            .resource-grid,
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .report-header h1 {
+                font-size: 30px;
+            }
+
+            .nav-links {
+                gap: 10px;
+            }
+
+            .container {
+                width: 94%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <div class="logo">⚛ Q-RESCUE</div>
+
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="dashboard.html#risk-map">Risk Map</a></li>
+            <li><a href="dashboard.html#resources">Resources</a></li>
+            <li><a href="dashboard.html#quantum">Quantum</a></li>
+            <li><a href="dashboard.html#shelter">Shelter</a></li>
+            <li><a href="dashboard.html#evacuation">Evacuation</a></li>
+            <li><a href="reports.html" class="active">Reports</a></li>
+        </ul>
+
+        <div class="live-btn">● SYSTEM LIVE</div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <!-- HEADER -->
+        <div class="report-header">
+
+            <div class="tag">EMERGENCY INTELLIGENCE REPORT</div>
+
+            <h1>Disaster Response Report</h1>
+
+            <p>
+                Consolidated overview of disaster risk, emergency resources,
+                shelter capacity, evacuation planning and quantum optimization.
+            </p>
+
+        </div>
+
+
+        <!-- SUMMARY -->
+        <section class="summary-grid">
+
+            <div class="summary-card">
+                <div class="icon">🚨</div>
+                <div class="label">PEOPLE AT RISK</div>
+                <h2 id="report-summary-population">Loading...</h2>
+                <div class="status">CURRENT DATA</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="icon">🏠</div>
+                <div class="label">SAFE SHELTERS</div>
+                <h2>3</h2>
+                <div class="status">MONITORED</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="icon">📦</div>
+                <div class="label">RESOURCE READINESS</div>
+                <h2 id="resource-readiness">Loading...</h2>
+                <div class="status">CALCULATED</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="icon">⚛</div>
+                <div class="label">OPTIMIZATION</div>
+                <h2>QAOA</h2>
+                <div class="status">QUANTUM SIMULATION</div>
+            </div>
+
+        </section>
+
+
+        <!-- DISASTER STATUS -->
+        <section class="section">
+
+            <div class="section-title">DISASTER STATUS</div>
+
+            <h2>Current Emergency Summary</h2>
+
+            <div class="report-card">
+
+                <div class="info-grid">
+
+                    <div class="info-box">
+                        <span>DISASTER TYPE</span>
+                        <strong id="report-disaster">Loading...</strong>
+                    </div>
+
+                    <div class="info-box">
+                        <span>OVERALL RISK</span>
+                        <strong id="report-risk">Loading...</strong>
+                    </div>
+
+                    <div class="info-box">
+                        <span>PEOPLE AT RISK</span>
+                        <strong id="report-population">Loading...</strong>
+                    </div>
+
+                    <div class="info-box">
+                        <span>MONITORING LOCATION</span>
+                        <strong id="report-location">Loading...</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RESOURCES -->
+        <section class="section">
+
+            <div class="section-title">RESOURCE READINESS</div>
+
+            <h2>Emergency Resources</h2>
+
+            <div class="resource-grid">
+
+                <div class="resource-card">
+
+                    <h3>🍱 Food</h3>
+
+                    <p>
+                        Available:
+                        <strong id="report-food">Loading...</strong>
+                    </p>
+
+                    <p>
+                        Required:
+                        <strong id="food-required">Loading...</strong>
+                    </p>
+
+                    <div class="progress">
+                        <div class="progress-bar" id="food-progress"></div>
+                    </div>
+
+                    <div class="percentage" id="food-percent">
+                        Loading...
+                    </div>
+
+                </div>
+
+
+                <div class="resource-card">
+
+                    <h3>💧 Water</h3>
+
+                    <p>
+                        Available:
+                        <strong id="report-water">Loading...</strong>
+                    </p>
+
+                    <p>
+                        Required:
+                        <strong id="water-required">Loading...</strong>
+                    </p>
+
+                    <div class="progress">
+                        <div class="progress-bar" id="water-progress"></div>
+                    </div>
+
+                    <div class="percentage" id="water-percent">
+                        Loading...
+                    </div>
+
+                </div>
+
+
+                <div class="resource-card">
+
+                    <h3>🏥 Medical Kits</h3>
+
+                    <p>
+                        Available:
+                        <strong id="report-medical">Loading...</strong>
+                    </p>
+
+                    <p>
+                        Required:
+                        <strong id="medical-required">Loading...</strong>
+                    </p>
+
+                    <div class="progress">
+                        <div class="progress-bar" id="medical-progress"></div>
+                    </div>
+
+                    <div class="percentage" id="medical-percent">
+                        Loading...
+                    </div>
+
+                </div>
+
+
+                <div class="resource-card">
+
+                    <h3>🚤 Rescue Boats</h3>
+
+                    <p>
+                        Available:
+                        <strong id="report-boats">Loading...</strong>
+                    </p>
+
+                    <p>
+                        Required:
+                        <strong id="boats-required">Loading...</strong>
+                    </p>
+
+                    <div class="progress">
+                        <div class="progress-bar" id="boats-progress"></div>
+                    </div>
+
+                    <div class="percentage" id="boats-percent">
+                        Loading...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- SHELTERS -->
+        <section class="section">
+
+            <div class="section-title">SHELTER MANAGEMENT</div>
+
+            <h2>Shelter Capacity Overview</h2>
+
+            <div class="shelter-grid">
+
+                <div class="shelter-card">
+
+                    <h3>SHELTER S1</h3>
+
+                    <div class="shelter-row">
+                        <span>Capacity</span>
+                        <strong>5,000</strong>
+                    </div>
+
+                    <div class="shelter-row">
+                        <span>Occupied</span>
+                        <strong>3,200</strong>
+                    </div>
+
+                    <div class="shelter-row">
+                        <span>Available</span>
+                        <strong class="available">1,800</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="shelter-card">
+
+                    <h3>SHELTER S2</h3>
+
+                    <div class="shelter-row">
+                        <span>Capacity</span>
+                        <strong>3,500</strong>
+                    </div>
+
+                    <div class="shelter-row">
+                        <span>Occupied</span>
+                        <strong>2,100</strong>
+                    </div>
+
+                    <div class="shelter-row">
+                        <span>Available</span>
+                        <strong class="available">1,400</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="shelter-card">
+
+                    <h3>SHELTER S3</h3>
+
+                    <div class="shelter-row">
+                        <span>Capacity</span>
+                        <strong>4,200</strong>
+                    </div>
+
+                    <div class="shelter-row">
+                        <span>Occupied</span>
+                        <strong>2,500</strong>
+                    </div>
+
+                    <div class="shelter-row">
+                        <span>Available</span>
+                        <strong class="available">1,700</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="total-capacity">
+                Total Current Available Shelter Capacity:
+                <strong>4,900 people</strong>
+            </div>
+
+        </section>
+
+
+        <!-- QUANTUM -->
+        <section class="section">
+
+            <div class="section-title">QUANTUM OPTIMIZATION</div>
+
+            <h2>Optimization Result</h2>
+
+            <div class="quantum-card">
+
+                <div class="quantum-badge">
+                    ⚛ QAOA SIMULATION
+                </div>
+
+                <div class="optimization-list">
+
+                    <div class="optimization-item">
+                        <span>Optimization Algorithm</span>
+                        <span>QAOA</span>
+                    </div>
+
+                    <div class="optimization-item">
+                        <span>Execution Method</span>
+                        <span>Statevector Simulation</span>
+                    </div>
+
+                    <div class="optimization-item">
+                        <span>Optimization Status</span>
+                        <span>SUCCESS</span>
+                    </div>
+
+                    <div class="optimization-item">
+                        <span>Resource Priority</span>
+                        <span>Food + Water</span>
+                    </div>
+
+                </div>
+
+                <div class="quantum-note">
+                    ⚛ This result represents a
+                    <strong>QAOA-based quantum simulation</strong>
+                    for demonstration purposes.
+                    It is not execution on real quantum hardware.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- EVACUATION -->
+        <section class="section">
+
+            <div class="section-title">EVACUATION PLANNING</div>
+
+            <h2>Recommended Evacuation Assignments</h2>
+
+            <div class="evacuation-grid">
+
+                <div class="evacuation-card">
+
+                    <div class="route">
+                        Machilipatnam
+                        <span>→ S1</span>
+                    </div>
+
+                    <div class="priority">
+                        HIGH PRIORITY
+                    </div>
+
+                </div>
+
+
+                <div class="evacuation-card">
+
+                    <div class="route">
+                        Narsapur
+                        <span>→ S2</span>
+                    </div>
+
+                    <div class="priority">
+                        HIGH PRIORITY
+                    </div>
+
+                </div>
+
+
+                <div class="evacuation-card">
+
+                    <div class="route">
+                        Kakinada
+                        <span>→ S3</span>
+                    </div>
+
+                    <div class="priority">
+                        MEDIUM PRIORITY
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FINAL REPORT -->
+        <section class="section">
+
+            <div class="final-report">
+
+                <h2>Emergency Report Ready</h2>
+
+                <p>
+                    Generate a consolidated emergency response report
+                    for administrative review.
+                </p>
+
+                <button class="generate-btn" onclick="generateReport()">
+                    📄 Generate Report
+                </button>
+
+                <div id="report-message">
+                    ✓ Emergency Response Report Generated
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        Q-RESCUE © 2026 | Disaster Response & Quantum Optimization System
+    </footer>
+
+
+    <script>
+
+        // Format numbers using Indian number system
+        function formatNumber(value) {
+
+            if (value === null || value === undefined) {
+                return "0";
+            }
+
+            return Number(value).toLocaleString("en-IN");
+        }
+
+
+        // Calculate percentage
+        function calculatePercentage(available, required) {
+
+            if (!required || required <= 0) {
+                return 100;
+            }
+
+            return Math.min(
+                100,
+                Math.round((available / required) * 100)
+            );
+        }
+
+
+        // Update resource card
+        function updateResource(
+            available,
+            required,
+            valueId,
+            requiredId,
+            progressId,
+            percentId
+        ) {
+
+            const percentage =
+                calculatePercentage(available, required);
+
+            document.getElementById(valueId).textContent =
+                formatNumber(available);
+
+            document.getElementById(requiredId).textContent =
+                formatNumber(required);
+
+            document.getElementById(progressId).style.width =
+                percentage + "%";
+
+            document.getElementById(percentId).textContent =
+                percentage + "% READY";
+        }
+
+
+        // Load report data from Flask backend
+        async function loadReport() {
+
+            try {
+
+                const response =
+                    await fetch("http://127.0.0.1:5000/api/report");
+
+                if (!response.ok) {
+                    throw new Error("API request failed");
+                }
+
+                const data = await response.json();
+
+                console.log("Q-RESCUE Report Data:", data);
+
+
+                // Disaster information
+                document.getElementById(
+                    "report-disaster"
+                ).textContent =
+                    data.disaster || "Cyclone";
+
+
+                document.getElementById(
+                    "report-risk"
+                ).textContent =
+                    data.risk_level || "HIGH";
+
+
+                document.getElementById(
+                    "report-population"
+                ).textContent =
+                    formatNumber(data.population);
+
+
+                document.getElementById(
+                    "report-summary-population"
+                ).textContent =
+                    formatNumber(data.population);
+
+
+                document.getElementById(
+                    "report-location"
+                ).textContent =
+                    data.location || "Machilipatnam";
+
+
+                // Resources
+                const resources = data.resources;
+
+
+                updateResource(
+                    resources.food,
+                    resources.food_required,
+                    "report-food",
+                    "food-required",
+                    "food-progress",
+                    "food-percent"
+                );
+
+
+                updateResource(
+                    resources.water,
+                    resources.water_required,
+                    "report-water",
+                    "water-required",
+                    "water-progress",
+                    "water-percent"
+                );
+
+
+                updateResource(
+                    resources.medical_kits,
+                    resources.medical_required,
+                    "report-medical",
+                    "medical-required",
+                    "medical-progress",
+                    "medical-percent"
+                );
+
+
+                updateResource(
+                    resources.rescue_boats,
+                    resources.boats_required,
+                    "report-boats",
+                    "boats-required",
+                    "boats-progress",
+                    "boats-percent"
+                );
+
+
+                // Overall resource readiness
+                const foodReady =
+                    calculatePercentage(
+                        resources.food,
+                        resources.food_required
+                    );
+
+                const waterReady =
+                    calculatePercentage(
+                        resources.water,
+                        resources.water_required
+                    );
+
+                const medicalReady =
+                    calculatePercentage(
+                        resources.medical_kits,
+                        resources.medical_required
+                    );
+
+                const boatsReady =
+                    calculatePercentage(
+                        resources.rescue_boats,
+                        resources.boats_required
+                    );
+
+
+                const overallReadiness = Math.round(
+                    (
+                        foodReady +
+                        waterReady +
+                        medicalReady +
+                        boatsReady
+                    ) / 4
+                );
+
+
+                document.getElementById(
+                    "resource-readiness"
+                ).textContent =
+                    overallReadiness + "%";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Unable to load report data:",
+                    error
+                );
+
+                // Fallback values
+                document.getElementById(
+                    "report-disaster"
+                ).textContent = "Cyclone";
+
+                document.getElementById(
+                    "report-risk"
+                ).textContent = "HIGH";
+
+                document.getElementById(
+                    "report-population"
+                ).textContent = "7,000";
+
+                document.getElementById(
+                    "report-summary-population"
+                ).textContent = "7,000";
+
+                document.getElementById(
+                    "report-location"
+                ).textContent = "Machilipatnam";
+
+                updateResource(
+                    5000,
+                    7000,
+                    "report-food",
+                    "food-required",
+                    "food-progress",
+                    "food-percent"
+                );
+
+                updateResource(
+                    3500,
+                    21000,
+                    "report-water",
+                    "water-required",
+                    "water-progress",
+                    "water-percent"
+                );
+
+                updateResource(
+                    900,
+                    350,
+                    "report-medical",
+                    "medical-required",
+                    "medical-progress",
+                    "medical-percent"
+                );
+
+                updateResource(
+                    70,
+                    2,
+                    "report-boats",
+                    "boats-required",
+                    "boats-progress",
+                    "boats-percent"
+                );
+
+                // 71 + 17 + 100 + 100 = 72
+                document.getElementById(
+                    "resource-readiness"
+                ).textContent = "72%";
+            }
+        }
+
+
+        // Generate report button
+        function generateReport() {
+
+            const message =
+                document.getElementById("report-message");
+
+            message.style.display = "block";
+
+            message.textContent =
+                "✓ Emergency Response Report Generated";
+
+        }
+
+
+        // Run when page loads
+        document.addEventListener(
+            "DOMContentLoaded",
+            loadReport
+        );
+
+    </script>
+
+</body>
+</html>
